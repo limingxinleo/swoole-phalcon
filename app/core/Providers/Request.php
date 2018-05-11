@@ -6,20 +6,28 @@
 // +----------------------------------------------------------------------
 // | Author: limx <715557344@qq.com> <https://github.com/limingxinleo>
 // +----------------------------------------------------------------------
-namespace App\Core\Services\Mvc;
+namespace App\Core\Providers;
 
-use App\Core\Services\ServiceProviderInterface;
-use Phalcon\Config;
-use Phalcon\DI\FactoryDefault;
+use Swoole\Http\Request as SwooleRequest;
+use Phalcon\Http\Request as BaseRequest;
 
-class Request implements ServiceProviderInterface
+class Request extends BaseRequest implements RequestInterface
 {
-    public function register(FactoryDefault $di, Config $config)
+    protected $swooleRequest;
+
+    public function setSwooleRequest(SwooleRequest $request)
     {
-        $di->setShared('request', function () {
-            // $request = new \Xin\Phalcon\Http\Request();
-            $request = new \App\Core\Providers\Request();
-            return $request;
-        });
+        $this->swooleRequest = $request;
     }
+
+    public function getSwoolerRequest()
+    {
+        return $this->swooleRequest;
+    }
+
+    public function getFd()
+    {
+        return $this->swooleRequest->fd;
+    }
+
 }
