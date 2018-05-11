@@ -26,11 +26,9 @@ $http->on('WorkerStart', function ($serv, $worker_id) {
 
 $http->on('request', function ($request, $response) {
     $application = SwooleApplication::getInstance();
-    $_GET = $request->get;
-    $_POST = $request->post;
-    $_COOKIE = $request->cookie;
-    $_FILES = $request->files;
+    // 需要重写App\Core\Providers\Request 类，不能再此覆盖$_SERVER、$_GET等参数
 
+    dump($request);
     // $application->handle();
     // $response->end("<h1>Hello Swoole. #" . rand(1000, 9999) . "</h1>");
 });
